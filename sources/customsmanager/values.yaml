@@ -1,0 +1,104 @@
+# Default values for customsmanager.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: blackpumas/customsmanager
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "1.0"
+
+imagePullSecrets: 
+- name: blackpumasdockerkey
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "customsmanager-sa"
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 640Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+secret:
+  name: customsmanager-env-var-secret
+env:
+  normal:
+    CUSTOMSMANAGER_DATA_SOURCE: /usr/local/data
+    CUSTOMSMANAGER_LOG_MONITORINTERVAL: '"60"'
+    CUSTOMSMANAGER_LOG_STOREDFILE_QUANTITY: '"10"'
+    CUSTOMSMANAGER_LOG_WSREQUEST_LEVEL: INFO
+    CUSTOMSMANAGER_LOG_HIBERNATE_LEVEL: ERROR
+    CUSTOMSMANAGER_LOG_PUMAREQUESTS_LEVEL: DEBUG
+    CUSTOMSMANAGER_LOG_SPRING_LEVEL: ERROR
+    CUSTOMSMANAGER_LOG_DOZER_LEVEL: ERROR
+    CUSTOMSMANAGER_LOG_ROOT_LEVEL: ERROR
+    CUSTOMSMANAGER_MAIL_MAILSUBJECT: '"[CUSTOMS-DEV]"'
+    CUSTOMSMANAGER_GOOGLE_USEGEOCODE: '"false"'
+    SPRING_DATASOURCE_URL: jdbc:mysql://puma-mysql.default.svc.cluster.local:3306/customs?serverTimezone=Europe/Madrid
+    JAVA_OPTS: -Xms128m -Xmx768m -Djavax.servlet.request.encoding=UTF-8 -Dfile.encoding=UTF-8 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=5000 -Dcom.sun.management.jmxremote.rmi.port=5000 -Djava.rmi.server.hostname=127.0.0.1
+  secret:
+    SPRING_DATASOURCE_USERNAME: db.username
+    SPRING_DATASOURCE_PASSWORD: db.password
