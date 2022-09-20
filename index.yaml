@@ -3,12 +3,12 @@ entries:
   customsmanager:
   - apiVersion: v2
     appVersion: 11.00.00
-    created: "2022-09-14T16:45:46.1549382+02:00"
+    created: "2022-09-20T14:44:01.7754144+02:00"
     description: A Helm chart for Kubernetes
     digest: 749f58f0ec85cb14cd9bd08e9c8fcedc87e923ec8a31115e9b39ef0af12acfcd
     name: customsmanager
     type: application
     urls:
-    - https://github.com/mcoe/puma-helm-chart/charts/customsmanager-1.0.0.tgz
+    - https://mcoe.github.io/puma-helm-chart/charts/customsmanager-1.0.0.tgz
     version: 1.0.0
-generated: "2022-09-14T16:45:46.1537447+02:00"
+generated: "2022-09-20T14:44:01.7727315+02:00"
